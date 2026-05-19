@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart — Bubu Dudu ki Duniya</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Bubu Dudu ki Duniya</a>
+      <button class="nav-toggle" aria-label="Open navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="reservation.html">Reservations</a>
+        <a class="cart-link" href="cart.html">Cart <span class="cart-count" aria-hidden="true">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="cart-hero">
+      <div class="container hero-content">
+        <span class="eyebrow">Your Order</span>
+        <h1>Review your cart</h1>
+        <p>Adjust quantities, remove items, and complete your order with our easy checkout experience.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container cart-wrapper">
+        <div id="cartContent"></div>
+        <aside class="cart-summary">
+          <h3>Order summary</h3>
+          <p>Subtotal <strong id="cartTotal">₹0.00</strong></p>
+          <div class="payment-panel">
+            <h4>Payment options</h4>
+            <div id="paymentMethods" class="payment-methods">
+              <label><input type="radio" name="paymentMethod" value="upi" /> UPI</label>
+              <label><input type="radio" name="paymentMethod" value="credit" /> Credit Card</label>
+              <label><input type="radio" name="paymentMethod" value="debit" /> Debit Card</label>
+            </div>
+            <div id="paymentDetails" class="payment-details">
+              <div class="payment-details-group" data-method="upi">
+                <label>UPI ID
+                  <input type="text" id="upiId" placeholder="example@bank" />
+                </label>
+              </div>
+              <div class="payment-details-group" data-method="card">
+                <label>Card number
+                  <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" />
+                </label>
+                <label>Expiry
+                  <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" />
+                </label>
+                <label>CVV
+                  <input type="text" id="cardCvv" placeholder="123" maxlength="3" />
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="security-panel">
+            <h4>Secure checkout</h4>
+            <p>Payments are protected with SSL-style encryption, tokenized transactions, and fraud monitoring.</p>
+          </div>
+          <div class="admin-control">
+            <h4>Admin control</h4>
+            <p>Order processing and payment management are monitored through a secure admin dashboard. Staff access is protected and all transaction activity is logged.</p>
+            <button class="btn btn-secondary" type="button" disabled>Admin Dashboard</button>
+          </div>
+          <div class="database-summary">
+            <h4>Database summary</h4>
+            <p>Orders processed: <strong id="orderCount">0</strong></p>
+            <p>Reservations confirmed: <strong id="reservationCount">0</strong></p>
+            <p>Cancellations: <strong id="cancellationCount">0</strong></p>
+            <p>Total collected: <strong id="totalCollected">₹0.00</strong></p>
+          </div>
+          <button id="checkoutButton" class="btn btn-primary" type="button" disabled>Checkout</button>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p>© 2026 Bubu Dudu ki Duniya. Flavorful meals, joyful service.</p>
+        <p>Follow us on social media for daily specials.</p>
+      </div>
+      <div class="footer-details">
+        <div>
+          <h3>Hours</h3>
+          <p>Mon-Fri 11am - 10pm</p>
+          <p>Sat-Sun 10am - 11pm</p>
+        </div>
+        <div>
+          <h3>Connect</h3>
+          <p><a href="#">Instagram</a> · <a href="#">Facebook</a> · <a href="#">TikTok</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

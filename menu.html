@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu — Bubu Dudu ki Duniya</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Bubu Dudu ki Duniya</a>
+      <button class="nav-toggle" aria-label="Open navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="reservation.html">Reservations</a>
+        <a class="cart-link" href="cart.html">Cart <span class="cart-count" aria-hidden="true">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="menu-hero">
+      <div class="container hero-content">
+        <span class="eyebrow">Taste our best</span>
+        <h1>Explore our menu</h1>
+        <p>From shareable starters to indulgent mains and desserts, every dish is prepared with passion and premium ingredients.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="reservation.html">Book a Table</a>
+          <a class="btn btn-secondary" href="about.html">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section menu">
+      <div class="container">
+        <span class="eyebrow">Snacks & Starters</span>
+        <h2>Indian street-style favorites</h2>
+        <div class="menu-grid">
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2018/03/11/08/39/samosa-3218281_1280.jpg" alt="Samosa Chaat" />
+            <h3>Samosa Chaat</h3>
+            <p>Crispy samosas topped with tangy tamarind chutney, yogurt, sev, and fresh herbs.</p>
+            <span class="price">₹180</span>
+            <button class="btn btn-outline" data-item="Samosa Chaat" data-price="180" data-description="Crispy samosas topped with tangy tamarind chutney, yogurt, sev, and fresh herbs.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2018/03/17/14/25/paneer-3232702_1280.jpg" alt="Paneer Tikka" />
+            <h3>Paneer Tikka</h3>
+            <p>Grilled cottage cheese cubes marinated in yogurt, spices, and char-grilled to perfection.</p>
+            <span class="price">₹260</span>
+            <button class="btn btn-outline" data-item="Paneer Tikka" data-price="260" data-description="Grilled cottage cheese cubes marinated in yogurt, spices, and char-grilled to perfection.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/02/26/09/54/tandoori-chicken-2092736_1280.jpg" alt="Tandoori Chicken" />
+            <h3>Tandoori Chicken</h3>
+            <p>Juicy chicken marinated in traditional spices and roasted in a clay oven.</p>
+            <span class="price">₹340</span>
+            <button class="btn btn-outline" data-item="Tandoori Chicken" data-price="340" data-description="Juicy chicken marinated in traditional spices and roasted in a clay oven.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2016/11/18/21/18/curry-1837338_1280.jpg" alt="Aloo Tikki" />
+            <h3>Aloo Tikki</h3>
+            <p>Pan-fried potato patties with chutney, yogurt, and crunchy sev.</p>
+            <span class="price">₹180</span>
+            <button class="btn btn-outline" data-item="Aloo Tikki" data-price="180" data-description="Pan-fried potato patties with chutney, yogurt, and crunchy sev.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2018/12/27/10/26/dosa-3899709_1280.jpg" alt="Masala Dosa" />
+            <h3>Masala Dosa</h3>
+            <p>Crispy rice and lentil crepe filled with spiced potato and served with chutneys.</p>
+            <span class="price">₹240</span>
+            <button class="btn btn-outline" data-item="Masala Dosa" data-price="240" data-description="Crispy rice and lentil crepe filled with spiced potato and served with chutneys.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2015/09/09/18/22/indian-food-933864_1280.jpg" alt="Chole Bhature" />
+            <h3>Chole Bhature</h3>
+            <p>Spiced chickpeas simmered with onions and tomatoes, paired with fluffy fried bread.</p>
+            <span class="price">₹220</span>
+            <button class="btn btn-outline" data-item="Chole Bhature" data-price="220" data-description="Spiced chickpeas simmered with onions and tomatoes, paired with fluffy fried bread.">Order</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section menu">
+      <div class="container">
+        <span class="eyebrow">Curries & Breads</span>
+        <h2>A la carte curries with naan and rice</h2>
+        <div class="menu-grid">
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/06/12/22/25/curry-2398320_1280.jpg" alt="Butter Chicken" />
+            <h3>Butter Chicken</h3>
+            <p>Classic creamy tomato curry with tender chicken, served with butter naan.</p>
+            <span class="price">₹420</span>
+            <button class="btn btn-outline" data-item="Butter Chicken" data-price="420" data-description="Classic creamy tomato curry with tender chicken, served with butter naan.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/07/16/10/35/curry-2504062_1280.jpg" alt="Dal Makhani" />
+            <h3>Dal Makhani</h3>
+            <p>Slow-cooked black lentils in a spiced cream sauce, paired with garlic naan.</p>
+            <span class="price">₹320</span>
+            <button class="btn btn-outline" data-item="Dal Makhani" data-price="320" data-description="Slow-cooked black lentils in a spiced cream sauce, paired with garlic naan.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/04/15/11/44/curry-2234391_1280.jpg" alt="Tandoori Naan" />
+            <h3>Tandoori Naan</h3>
+            <p>Soft, fluffy naan baked in the tandoor. Choose plain, garlic, or butter style.</p>
+            <span class="price">₹120</span>
+            <button class="btn btn-outline" data-item="Tandoori Naan" data-price="120" data-description="Soft, fluffy naan baked in the tandoor. Choose plain, garlic, or butter style.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/02/26/09/54/tandoori-chicken-2092736_1280.jpg" alt="Rogan Josh" />
+            <h3>Rogan Josh</h3>
+            <p>Aromatic lamb curry slow-cooked in Kashmiri spices and rich tomato gravy.</p>
+            <span class="price">₹460</span>
+            <button class="btn btn-outline" data-item="Rogan Josh" data-price="460" data-description="Aromatic lamb curry slow-cooked in Kashmiri spices and rich tomato gravy.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/08/04/19/24/curry-2582826_1280.jpg" alt="Palak Paneer" />
+            <h3>Palak Paneer</h3>
+            <p>Soft cottage cheese cubes in a silky spinach gravy with warm Indian spices.</p>
+            <span class="price">₹340</span>
+            <button class="btn btn-outline" data-item="Palak Paneer" data-price="340" data-description="Soft cottage cheese cubes in a silky spinach gravy with warm Indian spices.">Order</button>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p>© 2026 Bubu Dudu ki Duniya. Flavorful meals, joyful service.</p>
+        <p>Follow us on social media for daily specials.</p>
+      </div>
+      <div class="footer-details">
+        <div>
+          <h3>Hours</h3>
+          <p>Mon-Fri 11am - 10pm</p>
+          <p>Sat-Sun 10am - 11pm</p>
+        </div>
+        <div>
+          <h3>Connect</h3>
+          <p><a href="#">Instagram</a> · <a href="#">Facebook</a> · <a href="#">TikTok</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bubu Dudu ki Duniya</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home">Bubu Dudu ki Duniya</a>
+      <button class="nav-toggle" aria-label="Open navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="reservation.html">Reservations</a>
+        <a class="cart-link" href="cart.html">Cart <span class="cart-count" aria-hidden="true">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-content">
+        <span class="eyebrow">Taste the Difference</span>
+        <h1>Bubu Dudu ki Duniya</h1>
+        <p>Fresh ingredients, bold flavors, and unforgettable dining in the heart of the city.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="menu.html">View Menu</a>
+          <a class="btn btn-secondary" href="reservation.html">Book a Table</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about" id="about">
+      <div class="container section-grid">
+        <div>
+          <span class="eyebrow">About Us</span>
+          <h2>A modern dining destination with bold Indian flavors</h2>
+          <p>At Bubu Dudu ki Duniya, every dish is prepared with premium ingredients, vibrant spices, and beautiful presentation. Our menu blends street food favorites with signature platters designed to be shared and savored.</p>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <strong>15+</strong>
+              <p>Years of flavor</p>
+            </div>
+            <div class="stat-card">
+              <strong>30+</strong>
+              <p>Signature dishes</p>
+            </div>
+            <div class="stat-card">
+              <strong>4.9</strong>
+              <p>Guest rating</p>
+            </div>
+          </div>
+        </div>
+        <div class="about-image">
+          <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/05/16/14/12/food-2318750_1280.jpg" alt="Signature restaurant meal" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section menu" id="menu">
+      <div class="container">
+        <span class="eyebrow">Menu Highlights</span>
+        <h2>Indian favorites and comfort classics</h2>
+        <div class="menu-grid">
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/09/06/22/44/pani-puri-2728973_1280.jpg" alt="Pani Puri" />
+            <h3>Pani Puri Platter</h3>
+            <p>Crispy puris filled with spicy tamarind water, potato, and chickpeas.</p>
+            <span class="price">₹220</span>
+            <button class="btn btn-outline" data-item="Pani Puri Platter" data-price="220" data-description="Crispy puris filled with spicy tamarind water, potato, and chickpeas.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/06/12/22/25/curry-2398320_1280.jpg" alt="Butter Chicken" />
+            <h3>Butter Chicken</h3>
+            <p>Rich tomato-based curry with tender chicken, cream, and fragrant spices.</p>
+            <span class="price">₹380</span>
+            <button class="btn btn-outline" data-item="Butter Chicken" data-price="380" data-description="Rich tomato-based curry with tender chicken, cream, and fragrant spices.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2018/03/17/14/25/paneer-3232702_1280.jpg" alt="Paneer Tikka" />
+            <h3>Paneer Tikka</h3>
+            <p>Grilled cottage cheese marinated in yogurt, spices, and smoky char.</p>
+            <span class="price">₹260</span>
+            <button class="btn btn-outline" data-item="Paneer Tikka" data-price="260" data-description="Grilled cottage cheese marinated in yogurt, spices, and smoky char.">Order</button>
+          </article>
+          <article class="menu-item">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2018/03/18/00/21/biryani-3237535_1280.jpg" alt="Vegetable Biryani" />
+            <h3>Vegetable Biryani</h3>
+            <p>Fragrant basmati rice cooked with vegetables, saffron, and warming spices.</p>
+            <span class="price">₹340</span>
+            <button class="btn btn-outline" data-item="Vegetable Biryani" data-price="340" data-description="Fragrant basmati rice cooked with vegetables, saffron, and warming spices.">Order</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section featured-gallery">
+      <div class="container">
+        <span class="eyebrow">Featured photos</span>
+        <h2>Restaurant moments and plated favorites</h2>
+        <div class="featured-grid">
+          <article class="featured-card">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2017/06/12/22/25/curry-2398320_1280.jpg" alt="Butter Chicken Dish" />
+            <div class="featured-card-content">
+              <h3>Signature Butter Chicken</h3>
+              <p>Experience our creamy signature curry plated with warm naan and vibrant spices.</p>
+              <a class="btn btn-primary" href="menu.html">See Menu</a>
+            </div>
+          </article>
+          <article class="featured-card">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2019/11/03/22/22/restaurant-4598437_1280.jpg" alt="Restaurant interior" />
+            <div class="featured-card-content">
+              <h3>Nature-inspired ambiance</h3>
+              <p>Relax in a warm dining space with soft natural styling and calm, inviting tones.</p>
+              <a class="btn btn-primary" href="gallery.html">View Gallery</a>
+            </div>
+          </article>
+          <article class="featured-card">
+            <img loading="lazy" decoding="async" src="https://cdn.pixabay.com/photo/2018/03/17/14/25/paneer-3232702_1280.jpg" alt="Paneer Tikka Dish" />
+            <div class="featured-card-content">
+              <h3>Plated paneer favorites</h3>
+              <p>Freshly grilled paneer served with garden herbs and a beautifully balanced sauce.</p>
+              <a class="btn btn-primary" href="reservation.html">Reserve Now</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section services">
+      <div class="container service-cards">
+        <article>
+          <h3>Dine In</h3>
+          <p>Relax in our cozy dining room with a curated menu and excellent service.</p>
+        </article>
+        <article>
+          <h3>Takeout</h3>
+          <p>Order ahead for pickup and enjoy restaurant quality at home.</p>
+        </article>
+        <article>
+          <h3>Catering</h3>
+          <p>Custom menus for special events and gatherings of any size.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="container contact-grid">
+        <div>
+          <span class="eyebrow">Get in Touch</span>
+          <h2>Reserve your table or send a message</h2>
+          <p>We’re happy to host you for dinner, a family gathering, or a late-night meal. Reach out and we’ll make it special.</p>
+          <div class="contact-info">
+            <p><strong>Address:</strong> 123 Flavor Street, Food City</p>
+            <p><strong>Phone:</strong> (555) 123-4567</p>
+            <p><strong>Hours:</strong> Mon-Sun 11am - 10pm</p>
+          </div>
+        </div>
+        <form id="contactForm" class="contact-form">
+          <label>
+            Name
+            <input type="text" id="name" name="name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" id="email" name="email" required />
+          </label>
+          <label>
+            Message
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </label>
+          <button class="btn btn-primary" type="submit">Send Message</button>
+          <p id="formStatus" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p>© 2026 Bubu Dudu ki Duniya. Flavorful meals, joyful service.</p>
+        <p>Follow us on social media for daily specials.</p>
+      </div>
+      <div class="footer-details">
+        <div>
+          <h3>Hours</h3>
+          <p>Mon-Fri 11am - 10pm</p>
+          <p>Sat-Sun 10am - 11pm</p>
+        </div>
+        <div>
+          <h3>Connect</h3>
+          <p><a href="#">Instagram</a> · <a href="#">Facebook</a> · <a href="#">TikTok</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

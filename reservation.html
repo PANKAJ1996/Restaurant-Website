@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservations — Bubu Dudu ki Duniya</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Bubu Dudu ki Duniya</a>
+      <button class="nav-toggle" aria-label="Open navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="reservation.html">Reservations</a>
+        <a class="cart-link" href="cart.html">Cart <span class="cart-count" aria-hidden="true">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="reservation-hero">
+      <div class="container hero-content">
+        <span class="eyebrow">Reserve</span>
+        <h1>Book your table</h1>
+        <p>Choose the perfect time for your visit and let us prepare a memorable meal.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#booking">Reserve Now</a>
+          <a class="btn btn-secondary" href="menu.html">View Menu</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="booking">
+      <div class="container contact-grid">
+        <div>
+          <span class="eyebrow">Make a reservation</span>
+          <h2>Secure your table in seconds</h2>
+          <p>Pick your date, select the number of guests, and share any special requests. We’ll confirm your booking right away.</p>
+          <div class="contact-info">
+            <p><strong>Phone:</strong> (555) 123-4567</p>
+            <p><strong>Hours:</strong> Mon-Sun 11am - 10pm</p>
+            <p><strong>Location:</strong> 123 Flavor Street, Food City</p>
+          </div>
+        </div>
+        <form id="reservationForm" class="contact-form">
+          <label>
+            Name
+            <input type="text" id="resName" name="name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" id="resEmail" name="email" required />
+          </label>
+          <label>
+            Phone
+            <input type="tel" id="resPhone" name="phone" required />
+          </label>
+          <label>
+            Date
+            <input type="date" id="resDate" name="date" required />
+          </label>
+          <label>
+            Time
+            <input type="time" id="resTime" name="time" required />
+          </label>
+          <label>
+            Guests
+            <input type="number" id="resGuests" name="guests" min="1" max="12" value="2" required />
+          </label>
+          <label>
+            Special requests
+            <textarea id="resNotes" name="notes" rows="4" placeholder="Optional" ></textarea>
+          </label>
+          <button class="btn btn-primary" type="submit">Confirm Reservation</button>
+          <p id="reservationStatus" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p>© 2026 Bubu Dudu ki Duniya. Flavorful meals, joyful service.</p>
+        <p>Follow us on social media for daily specials.</p>
+      </div>
+      <div class="footer-details">
+        <div>
+          <h3>Hours</h3>
+          <p>Mon-Fri 11am - 10pm</p>
+          <p>Sat-Sun 10am - 11pm</p>
+        </div>
+        <div>
+          <h3>Connect</h3>
+          <p><a href="#">Instagram</a> · <a href="#">Facebook</a> · <a href="#">TikTok</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
