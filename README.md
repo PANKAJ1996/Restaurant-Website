@@ -17,3 +17,15 @@ This is a self-contained, static website (HTML/CSS/JS) with:
 ## Admin notes
 - Admin page uses browser localStorage only.
 - This repository now includes an optional Flask/MariaDB backend for orders, reservations, and cancellations.
+
+## Public backend tunnel
+To expose the local backend with a public URL, use the new helper script:
+
+```powershell
+python -m pip install -r requirements.txt
+python start_public_backend.py <your-ngrok-auth-token>
+```
+
+Then copy the printed `Public backend URL` into `script.js` as `backendConfig.url`.
+
+If you want the backend accessible from any mobile network, ngrok is the easiest option.
