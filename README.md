@@ -16,4 +16,4 @@ This is a self-contained, static website (HTML/CSS/JS) with:
 
 ## Admin notes
 - Admin page uses browser localStorage only.
-- No backend is included.
+- This repository now includes an optional Flask/MariaDB backend for orders, reservations, and cancellations.

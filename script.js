@@ -19,6 +19,55 @@ const supabaseConfig = {
   anonKey: '', // your Supabase anon public key
 };
 
+const backendConfig = {
+  url: '', // local Flask backend will use the current site origin when hosted from the backend server
+};
+
+function isGitHubPages() {
+  return window.location.hostname.endsWith('github.io');
+}
+
+function getBackendUrl() {
+  if (isGitHubPages()) {
+    console.warn(
+      'Local backend calls are disabled on GitHub Pages. Run the site locally or deploy the backend to a public HTTPS endpoint.'
+    );
+    return null;
+  }
+  return backendConfig.url || window.location.origin;
+}
+
+function hasBackend() {
+  return Boolean(getBackendUrl());
+}
+
+async function backendInsert(table, data) {
+  const backendUrl = getBackendUrl();
+  if (!backendUrl) {
+    return { error: new Error('Backend is unavailable from this site origin') };
+  }
+
+  try {
+    const endpoint = `${backendUrl.replace(/\/+$/g, '')}/api/${table}`;
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      return { error: new Error(`Backend insert failed: ${response.status} ${error}`) };
+    }
+
+    return { data: null, error: null };
+  } catch (error) {
+    return { error };
+  }
+}
+
 function hasRemoteDatabase() {
   return Boolean(supabaseConfig.url && supabaseConfig.anonKey);
 }
@@ -139,6 +188,22 @@ function addOrderToDatabase(order) {
     };
     supabaseInsert('orders', payload).catch(() => null);
   }
+
+  if (hasBackend()) {
+    const backendPayload = {
+      order_id: order.id,
+      created_at: order.createdAt,
+      status: order.status,
+      total_amount: order.total,
+      payment_method: order.paymentMethod,
+      payment_reference: order.paymentReference || null,
+      customer_name: order.customer?.name || null,
+      customer_email: order.customer?.email || null,
+      customer_phone: order.customer?.phone || null,
+      items: order.items,
+    };
+    backendInsert('orders', backendPayload).catch(() => null);
+  }
 }
 
 function addReservationToDatabase(reservation) {
@@ -159,7 +224,12 @@ function addReservationToDatabase(reservation) {
       customer_phone: reservation.phone,
       notes: reservation.notes || null,
     };
-    supabaseInsert('reservations', payload).catch(() => null);
+    if (hasRemoteDatabase()) {
+      supabaseInsert('reservations', payload).catch(() => null);
+    }
+    if (hasBackend()) {
+      backendInsert('reservations', payload).catch(() => null);
+    }
   }
 }
 
@@ -168,16 +238,21 @@ function addCancellationToDatabase(cancellation) {
   db.cancellations.push(cancellation);
   saveDatabase(db);
 
+  const payload = {
+    cancellation_id: cancellation.id,
+    created_at: cancellation.date,
+    type: cancellation.type,
+    reference_id: cancellation.refId,
+    reason: cancellation.reason,
+    amount: cancellation.amount,
+  };
+
   if (hasRemoteDatabase()) {
-    const payload = {
-      cancellation_id: cancellation.id,
-      created_at: cancellation.date,
-      type: cancellation.type,
-      reference_id: cancellation.refId,
-      reason: cancellation.reason,
-      amount: cancellation.amount,
-    };
     supabaseInsert('cancellations', payload).catch(() => null);
+  }
+
+  if (hasBackend()) {
+    backendInsert('cancellations', payload).catch(() => null);
   }
 }
 
