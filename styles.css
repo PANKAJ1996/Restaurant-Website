@@ -117,7 +117,7 @@ textarea {
   display: grid;
   place-items: center;
   padding: 4rem 0 3rem;
-  background-image: linear-gradient(rgba(255, 248, 240, 0.92), rgba(255, 248, 240, 0.92)), url("https://cdn.pixabay.com/photo/2019/03/17/21/46/restaurant-4062167_1280.jpg");
+  background-image: linear-gradient(rgba(255, 248, 240, 0.92), rgba(255, 248, 240, 0.92)), url("images/restaurant-bg.png");
   background-size: cover;
   background-position: center;
 }
