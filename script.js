@@ -14,6 +14,53 @@ const dbKey = 'bubuDuduDB';
 const cartKey = 'foodCart';
 const reservationKey = 'foodReservation';
 
+const supabaseConfig = {
+  url: '', // e.g. https://xyzcompany.supabase.co
+  anonKey: '', // your Supabase anon public key
+};
+
+function hasRemoteDatabase() {
+  return Boolean(supabaseConfig.url && supabaseConfig.anonKey);
+}
+
+async function supabaseInsert(table, data) {
+  if (!hasRemoteDatabase()) {
+    return { error: new Error('Supabase configuration is missing') };
+  }
+
+  const endpoint = `${supabaseConfig.url}/rest/v1/${table}`;
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      apikey: supabaseConfig.anonKey,
+      Authorization: `Bearer ${supabaseConfig.anonKey}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    return { error: new Error(`Supabase insert failed: ${response.status} ${error}`) };
+  }
+
+  return { data: null, error: null };
+}
+
+function maskCardNumber(cardNumber) {
+  const digits = String(cardNumber).replace(/\D/g, '');
+  return digits.length >= 4 ? digits.slice(-4) : digits;
+}
+
+function maskUpiId(upiId) {
+  const value = String(upiId).trim();
+  if (value.length <= 3) return '***';
+  const [user, domain] = value.split('@');
+  if (!domain) return '***';
+  return `${user.slice(0, 1)}***@${domain}`;
+}
+
 function loadCart() {
   try {
     const stored = window.localStorage.getItem(cartKey);
@@ -76,18 +123,62 @@ function addOrderToDatabase(order) {
   db.orders.push(order);
   db.totalCollected += order.total;
   saveDatabase(db);
+
+  if (hasRemoteDatabase()) {
+    const payload = {
+      order_id: order.id,
+      created_at: order.createdAt,
+      status: order.status,
+      total_amount: order.total,
+      payment_method: order.paymentMethod,
+      payment_reference: order.paymentReference || null,
+      customer_name: order.customer?.name || null,
+      customer_email: order.customer?.email || null,
+      customer_phone: order.customer?.phone || null,
+      items: JSON.stringify(order.items),
+    };
+    supabaseInsert('orders', payload).catch(() => null);
+  }
 }
 
 function addReservationToDatabase(reservation) {
   const db = loadDatabase();
   db.reservations.push(reservation);
   saveDatabase(db);
+
+  if (hasRemoteDatabase()) {
+    const payload = {
+      reservation_id: reservation.id,
+      created_at: reservation.createdAt,
+      status: reservation.status,
+      reservation_date: reservation.date,
+      reservation_time: reservation.time,
+      guests: Number(reservation.guests) || 1,
+      customer_name: reservation.name,
+      customer_email: reservation.email,
+      customer_phone: reservation.phone,
+      notes: reservation.notes || null,
+    };
+    supabaseInsert('reservations', payload).catch(() => null);
+  }
 }
 
 function addCancellationToDatabase(cancellation) {
   const db = loadDatabase();
   db.cancellations.push(cancellation);
   saveDatabase(db);
+
+  if (hasRemoteDatabase()) {
+    const payload = {
+      cancellation_id: cancellation.id,
+      created_at: cancellation.date,
+      type: cancellation.type,
+      reference_id: cancellation.refId,
+      reason: cancellation.reason,
+      amount: cancellation.amount,
+    };
+    supabaseInsert('cancellations', payload).catch(() => null);
+  }
 }
 
 function updateReservationStatus(reservationId, status) {
@@ -239,6 +330,22 @@ function getSelectedPaymentMethod() {
 }
 
 function validatePaymentFields(method) {
+  const customerName = document.getElementById('customerName')?.value.trim() || '';
+  const customerEmail = document.getElementById('customerEmail')?.value.trim() || '';
+  const customerPhone = document.getElementById('customerPhone')?.value.trim() || '';
+
+  if (!customerName || !customerEmail || !customerPhone) {
+    return { valid: false, message: 'Please enter your name, email, and phone number before checkout.' };
+  }
+
+  if (!/^\S+@\S+\.\S+$/.test(customerEmail)) {
+    return { valid: false, message: 'Please enter a valid email address.' };
+  }
+
+  if (!/^[0-9\-\s()+]{6,20}$/.test(customerPhone)) {
+    return { valid: false, message: 'Please enter a valid phone number.' };
+  }
+
   if (method === 'upi') {
     const upiId = document.getElementById('upiId')?.value.trim() || '';
     if (!upiId || !upiId.includes('@')) {
@@ -274,7 +381,7 @@ function updatePaymentDetails() {
   });
 }
 
-function handleCheckout() {
+async function handleCheckout() {
   const cart = loadCart();
   if (!cart.length) return;
   const selectedMethod = getSelectedPaymentMethod();
@@ -290,14 +397,36 @@ function handleCheckout() {
   }
 
   const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const paymentReference = `pm_${Date.now()}`;
+
+  const paymentDetails = {
+    method: selectedMethod,
+    card_last4: null,
+    upi_id: null,
+  };
+
+  if (selectedMethod === 'upi') {
+    paymentDetails.upi_id = maskUpiId(document.getElementById('upiId')?.value || '');
+  } else {
+    paymentDetails.card_last4 = maskCardNumber(document.getElementById('cardNumber')?.value || '');
+  }
+
   const order = {
     id: `order-${Date.now()}`,
     items: cart,
     total: subtotal,
     paymentMethod: selectedMethod,
+    paymentReference,
+    paymentDetails,
     status: 'completed',
     createdAt: new Date().toISOString(),
+    customer: {
+      name: document.getElementById('customerName')?.value?.trim() || null,
+      email: document.getElementById('customerEmail')?.value?.trim() || null,
+      phone: document.getElementById('customerPhone')?.value?.trim() || null,
+    },
   };
+
   addOrderToDatabase(order);
   window.localStorage.removeItem(cartKey);
   renderCartPage();

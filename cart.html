@@ -42,6 +42,19 @@
           <h3>Order summary</h3>
           <p>Subtotal <strong id="cartTotal">₹0.00</strong></p>
           <div class="payment-panel">
+            <h4>Customer details</h4>
+            <label>
+              Name
+              <input type="text" id="customerName" placeholder="Your full name" required />
+            </label>
+            <label>
+              Email
+              <input type="email" id="customerEmail" placeholder="you@example.com" required />
+            </label>
+            <label>
+              Phone
+              <input type="tel" id="customerPhone" placeholder="123-456-7890" required />
+            </label>
             <h4>Payment options</h4>
             <div id="paymentMethods" class="payment-methods">
               <label><input type="radio" name="paymentMethod" value="upi" /> UPI</label>
