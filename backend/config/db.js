@@ -24,8 +24,20 @@ function buildPoolOptions() {
   }
 
   // Prefer the full connection string if provided (Railway MYSQL_URL).
+  // Also allow forcing a specific auth plugin for compatibility issues.
   if (config.db.url) {
-    return { uri: config.db.url, ...base };
+    const authPlugins = {};
+
+    // If you hit errors like "auth_gssapi_client" plugin mismatch,
+    // set FORCE_MYSQL_AUTH_PLUGIN to one of: mysql_native_password | caching_sha2_password.
+    // This is optional and only affects compatibility edge-cases.
+    const forcedPlugin = process.env.FORCE_MYSQL_AUTH_PLUGIN;
+    if (forcedPlugin === 'mysql_native_password' || forcedPlugin === 'caching_sha2_password') {
+      // mysql2 supports authPlugins option with plugin-name keys.
+      authPlugins[forcedPlugin] = require(`mysql2/lib/auth_plugins/${forcedPlugin}`);
+    }
+
+    return { uri: config.db.url, ...base, ...(Object.keys(authPlugins).length ? { authPlugins } : {}) };
   }
 
   return {
@@ -38,10 +50,62 @@ function buildPoolOptions() {
   };
 }
 
-const poolOptions = buildPoolOptions();
-const pool = poolOptions.uri
-  ? mysql.createPool(poolOptions.uri)
-  : mysql.createPool(poolOptions);
+function isAuthPluginMismatchError(err) {
+  const msg = String(err && (err.message || err.toString() || err.code || ''));
+
+  // Common patterns across mysql/mariadb/edge proxies.
+  return (
+    /auth.*plugin/i.test(msg) ||
+    /plugin.*mismatch/i.test(msg) ||
+    /caching_sha2_password/i.test(msg) ||
+    /mysql_native_password/i.test(msg) ||
+    /gssapi_client/i.test(msg)
+  );
+}
+
+function applyFallbackAuthPlugin(poolOpts, pluginName) {
+  // mysql2 accepts authPlugins only when using credentials objects.
+  // For URI pools, mysql2 forwards options; supplying authPlugins still works.
+  const authPlugins = {
+    [pluginName]: require(`mysql2/lib/auth_plugins/${pluginName}`),
+  };
+
+  // If buildPoolOptions returned { uri, ... } we preserve it.
+  return {
+    ...poolOpts,
+    ...(poolOpts.uri ? { uri: poolOpts.uri } : null),
+    authPlugins,
+  };
+}
+
+function createPoolWithPossibleFallback() {
+  const poolOpts = buildPoolOptions();
+
+  // If user already forced a plugin, don't second-guess.
+  const forcedPlugin = process.env.FORCE_MYSQL_AUTH_PLUGIN;
+  const hasForced = forcedPlugin === 'mysql_native_password' || forcedPlugin === 'caching_sha2_password';
+
+  try {
+    return poolOpts.uri ? mysql.createPool(poolOpts.uri) : mysql.createPool(poolOpts);
+  } catch (err) {
+    if (hasForced || !isAuthPluginMismatchError(err)) throw err;
+
+    // Try the two most compatible plugins.
+    for (const plugin of ['mysql_native_password', 'caching_sha2_password']) {
+      try {
+        const nextOpts = applyFallbackAuthPlugin(poolOpts, plugin);
+        return nextOpts.uri ? mysql.createPool(nextOpts.uri) : mysql.createPool(nextOpts);
+      } catch (e2) {
+        // continue
+      }
+    }
+
+    throw err;
+  }
+}
+
+const pool = createPoolWithPossibleFallback();
+
 
 /**
  * Run a query against the pool.
