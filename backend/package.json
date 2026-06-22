@@ -1,0 +1,38 @@
+{
+  "name": "restaurant-website-backend",
+  "version": "1.0.0",
+  "description": "Node.js/Express API server for the Restaurant Website (orders, reservations, cancellations) backed by Railway MySQL.",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "qa": "cross-env NODE_ENV=qa node server.js",
+    "prod": "cross-env NODE_ENV=production node server.js",
+    "init-db": "node scripts/init-db.js"
+  },
+  "keywords": [
+    "express",
+    "mysql",
+    "restaurant",
+    "api",
+    "render",
+    "railway"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.4"
+  }
+}

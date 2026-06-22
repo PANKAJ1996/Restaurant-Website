@@ -20,7 +20,7 @@ const supabaseConfig = {
 };
 
 const backendConfig = {
-  url: '', // local Flask backend will use the current site origin when hosted from the backend server
+  url: 'http://127.0.0.1:5000', // local Flask backend URL
 };
 
 function isGitHubPages() {

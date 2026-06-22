@@ -18,14 +18,31 @@ This is a self-contained, static website (HTML/CSS/JS) with:
 - Admin page uses browser localStorage only.
 - This repository now includes an optional Flask/MariaDB backend for orders, reservations, and cancellations.
 
-## Public backend tunnel
-To expose the local backend with a public URL, use the new helper script:
+## Local backend API
+This project now includes an optional Flask/MariaDB backend for orders, reservations, and cancellations.
 
-```powershell
-python -m pip install -r requirements.txt
-python start_public_backend.py <your-ngrok-auth-token>
-```
+### Run locally
+1. Install dependencies:
+   ```powershell
+   python -m pip install -r requirements.txt
+   ```
+2. Start the backend:
+   ```powershell
+   python backend.py
+   ```
+3. Open the site and API locally:
+   - Website: `http://127.0.0.1:5000/`
+   - API base: `http://127.0.0.1:5000/api`
 
-Then copy the printed `Public backend URL` into `script.js` as `backendConfig.url`.
+### API endpoints
+- `GET http://127.0.0.1:5000/api/health`
+- `GET/POST http://127.0.0.1:5000/api/orders`
+- `GET/POST http://127.0.0.1:5000/api/reservations`
+- `GET/POST http://127.0.0.1:5000/api/cancellations`
 
-If you want the backend accessible from any mobile network, ngrok is the easiest option.
+### Verify customer orders
+- To see all orders: `GET http://127.0.0.1:5000/api/orders`
+- To filter by customer email: `GET http://127.0.0.1:5000/api/orders?customer_email=you@example.com`
+- To verify a specific order: `GET http://127.0.0.1:5000/api/orders?order_id=<order_id>`
+
+The backend stores orders in MariaDB, so successful POSTs from the site are persisted and can be verified with these endpoints.

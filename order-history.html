@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order & Reservation History - Bubu Dudu ki Duniya</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .history-container {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .tab-btn {
+      padding: 12px 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      color: #d4a574;
+      border-bottom-color: #d4a574;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .history-item {
+      background: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 10px;
+    }
+
+    .history-id {
+      font-weight: bold;
+      color: #d4a574;
+      font-size: 16px;
+    }
+
+    .history-status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-completed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-cancelled {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .history-detail {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .detail-row {
+      font-size: 14px;
+    }
+
+    .detail-label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .detail-value {
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .items-list {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 12px;
+      margin-top: 10px;
+      grid-column: 1 / -1;
+    }
+
+    .items-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .items-list li:last-child {
+      border-bottom: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+
+    .filter-section {
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    .filter-input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 100%;
+      max-width: 300px;
+      font-size: 14px;
+    }
+
+    .filter-btn {
+      padding: 10px 20px;
+      background: #d4a574;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .filter-btn:hover {
+      background: #c49564;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Bubu Dudu ki Duniya</a>
+      <button class="nav-toggle" aria-label="Open navigation">
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="reservation.html">Reservation</a>
+        <a href="order-history.html" class="active">Order History</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="history-container">
+    <h1>Order & Reservation History</h1>
+
+    <div class="filter-section">
+      <label for="emailFilter">Search by Email:</label>
+      <input type="email" id="emailFilter" class="filter-input" placeholder="Enter your email" />
+      <button class="filter-btn" onclick="filterHistory()">Search</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('orders')">Orders</button>
+      <button class="tab-btn" onclick="switchTab('reservations')">Reservations</button>
+      <button class="tab-btn" onclick="switchTab('cancellations')">Cancellations</button>
+    </div>
+
+    <!-- Orders Tab -->
+    <div id="orders" class="tab-content active">
+      <div id="ordersContainer"></div>
+    </div>
+
+    <!-- Reservations Tab -->
+    <div id="reservations" class="tab-content">
+      <div id="reservationsContainer"></div>
+    </div>
+
+    <!-- Cancellations Tab -->
+    <div id="cancellations" class="tab-content">
+      <div id="cancellationsContainer"></div>
+    </div>
+  </main>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-content').forEach((el) => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach((el) => el.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+      event.target.classList.add('active');
+      loadHistory(tab);
+    }
+
+    async function loadHistory(type) {
+      const email = document.getElementById('emailFilter').value;
+      const endpoint = email ? `/api/${type}?customer_email=${email}` : `/api/${type}`;
+
+      try {
+        const response = await fetch(`http://127.0.0.1:5000${endpoint}`);
+        const data = await response.json();
+
+        const container = document.getElementById(type + 'Container');
+        if (!Array.isArray(data) || data.length === 0) {
+          container.innerHTML = '<div class="empty-state">No records found</div>';
+          return;
+        }
+
+        let html = '';
+        data.forEach((item) => {
+          html += renderHistoryItem(item, type);
+        });
+        container.innerHTML = html;
+      } catch (error) {
+        console.error('Error loading history:', error);
+        document.getElementById(type + 'Container').innerHTML =
+          '<div class="empty-state">Error loading records</div>';
+      }
+    }
+
+    function renderHistoryItem(item, type) {
+      const statusClass = `status-${item.status || 'pending'}`.toLowerCase();
+
+      if (type === 'orders') {
+        const items = typeof item.items === 'string' ? JSON.parse(item.items) : item.items;
+        const itemsHtml = items
+          .map((it) => `<li>${it.name} (x${it.quantity}) - ₹${it.price}</li>`)
+          .join('');
+
+        return `
+          <div class="history-item">
+            <div class="history-header">
+              <div class="history-id">Order: ${item.order_id}</div>
+              <div class="history-status ${statusClass}">${item.status}</div>
+            </div>
+            <div class="history-detail">
+              <div class="detail-row">
+                <div class="detail-label">Customer</div>
+                <div class="detail-value">${item.customer_name}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Email</div>
+                <div class="detail-value">${item.customer_email}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Phone</div>
+                <div class="detail-value">${item.customer_phone}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Total Amount</div>
+                <div class="detail-value">₹${item.total_amount}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Payment Method</div>
+                <div class="detail-value">${item.payment_method}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Date</div>
+                <div class="detail-value">${new Date(item.created_at).toLocaleString()}</div>
+              </div>
+              <div class="items-list">
+                <strong>Items:</strong>
+                <ul>${itemsHtml}</ul>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (type === 'reservations') {
+        return `
+          <div class="history-item">
+            <div class="history-header">
+              <div class="history-id">Reservation: ${item.reservation_id}</div>
+              <div class="history-status ${statusClass}">${item.status}</div>
+            </div>
+            <div class="history-detail">
+              <div class="detail-row">
+                <div class="detail-label">Customer</div>
+                <div class="detail-value">${item.customer_name}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Email</div>
+                <div class="detail-value">${item.customer_email}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Phone</div>
+                <div class="detail-value">${item.customer_phone}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Date</div>
+                <div class="detail-value">${item.reservation_date}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Time</div>
+                <div class="detail-value">${item.reservation_time}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Guests</div>
+                <div class="detail-value">${item.guests}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Notes</div>
+                <div class="detail-value">${item.notes || 'N/A'}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Created</div>
+                <div class="detail-value">${new Date(item.created_at).toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (type === 'cancellations') {
+        return `
+          <div class="history-item">
+            <div class="history-header">
+              <div class="history-id">Cancellation: ${item.cancellation_id}</div>
+              <div class="history-status status-cancelled">CANCELLED</div>
+            </div>
+            <div class="history-detail">
+              <div class="detail-row">
+                <div class="detail-label">Type</div>
+                <div class="detail-value">${item.type}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Reference ID</div>
+                <div class="detail-value">${item.reference_id}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Reason</div>
+                <div class="detail-value">${item.reason || 'N/A'}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Refund Amount</div>
+                <div class="detail-value">₹${item.amount}</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Date</div>
+                <div class="detail-value">${new Date(item.created_at).toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function filterHistory() {
+      const currentTab = document.querySelector('.tab-content.active').id;
+      loadHistory(currentTab);
+    }
+
+    // Load orders on page load
+    loadHistory('orders');
+  </script>
+</body>
+</html>
