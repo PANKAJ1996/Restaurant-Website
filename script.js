@@ -20,17 +20,19 @@ const supabaseConfig = {
 };
 
 // Backend base URL for browser -> API calls.
-// Rules:
-// 1) If you deploy with an env var, set window.BACKEND_URL (optional) or ensure origin matches.
-// 2) Otherwise, use the same origin (works when backend is hosted on same domain).
-// 3) Fallback for local dev.
+// Use a runtime-configured backend URL for DEV/QA/PROD.
+// Priority:
+// 1) window.BACKEND_URL (optional global set in HTML)
+// 2) window.NEXT_PUBLIC_BACKEND_URL (Vercel public env)
+// 3) Same-origin fallback (only works if frontend + backend share domain)
+// 4) Local dev fallback
 const backendConfig = {
   url:
-    // QA/PROD: Vercel can inject this via NEXT_PUBLIC_BACKEND_URL or your own variable.
     (typeof window !== 'undefined' && (window.BACKEND_URL || window.NEXT_PUBLIC_BACKEND_URL)) ||
     (window.location && window.location.origin ? window.location.origin : null) ||
     'http://127.0.0.1:5000',
 };
+
 
 function isGitHubPages() {
   return window.location.hostname.endsWith('github.io');
