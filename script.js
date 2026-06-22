@@ -19,8 +19,17 @@ const supabaseConfig = {
   anonKey: '', // your Supabase anon public key
 };
 
+// Backend base URL for browser -> API calls.
+// Rules:
+// 1) If you deploy with an env var, set window.BACKEND_URL (optional) or ensure origin matches.
+// 2) Otherwise, use the same origin (works when backend is hosted on same domain).
+// 3) Fallback for local dev.
 const backendConfig = {
-  url: 'http://127.0.0.1:5000', // local Flask backend URL
+  url:
+    // QA/PROD: Vercel can inject this via NEXT_PUBLIC_BACKEND_URL or your own variable.
+    (typeof window !== 'undefined' && (window.BACKEND_URL || window.NEXT_PUBLIC_BACKEND_URL)) ||
+    (window.location && window.location.origin ? window.location.origin : null) ||
+    'http://127.0.0.1:5000',
 };
 
 function isGitHubPages() {
