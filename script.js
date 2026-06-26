@@ -19,9 +19,50 @@ const supabaseConfig = {
   anonKey: '', // your Supabase anon public key
 };
 
+/**
+ * Backend base URL for browser -> API calls.
+ * Goal: QA/PROD public access without requiring Vercel env vars.
+ *
+ * Priority:
+ * 1) window.BACKEND_URL (optional global set in HTML)
+ * 2) window.NEXT_PUBLIC_BACKEND_URL (Vercel public env, optional)
+ * 3) runtime backend-config.json (fetched from same origin)
+ * 4) window.location.origin (same-origin fallback)
+ * 5) local dev fallback
+ */
 const backendConfig = {
-  url: 'http://127.0.0.1:5000', // local Flask backend URL
+  url: null,
 };
+
+async function resolveBackendUrl() {
+  // 1) window.BACKEND_URL / 2) window.NEXT_PUBLIC_BACKEND_URL
+  const runtimeUrl =
+    typeof window !== 'undefined' && (window.BACKEND_URL || window.NEXT_PUBLIC_BACKEND_URL)
+      ? (window.BACKEND_URL || window.NEXT_PUBLIC_BACKEND_URL)
+      : null;
+
+  if (runtimeUrl) return runtimeUrl;
+
+  // 3) backend-config.json from same origin
+  try {
+    const resp = await fetch('./backend-config.json', { cache: 'no-store' });
+    if (resp.ok) {
+      const json = await resp.json();
+      if (json && typeof json.backendUrl === 'string' && json.backendUrl.trim()) {
+        return json.backendUrl.trim();
+      }
+    }
+  } catch (e) {
+    // ignore; we will try other fallbacks
+  }
+
+  // 4) same-origin fallback
+  if (window.location && window.location.origin) return window.location.origin;
+
+  // 5) local dev fallback
+  return 'http://127.0.0.1:5000';
+}
+
 
 function isGitHubPages() {
   return window.location.hostname.endsWith('github.io');

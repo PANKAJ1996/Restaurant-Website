@@ -16,14 +16,25 @@ const dotenv = require('dotenv');
 
 const NODE_ENV = (process.env.NODE_ENV || 'development').toLowerCase();
 
-// Load environment-specific file first, then a generic .env as fallback.
-const envFileName = `.env.${NODE_ENV}`;
-const envSpecificPath = path.resolve(__dirname, '..', envFileName);
+// Load server environment-specific file first, then a legacy/generic fallback.
+// New convention: .env.<nodeEnv>-server, e.g. .env.development-server
+// Legacy: .env.<nodeEnv> (if you still keep those)
+// Fallback: ../.env (if present), then platform-injected variables.
+
+const envServerFileName = `.env.${NODE_ENV}-server`;
+const envServerPath = path.resolve(__dirname, '..', envServerFileName);
+
+const envLegacyFileName = `.env.${NODE_ENV}`;
+const envLegacyPath = path.resolve(__dirname, '..', envLegacyFileName);
+
 const envDefaultPath = path.resolve(__dirname, '..', '.env');
 
-if (fs.existsSync(envSpecificPath)) {
-  dotenv.config({ path: envSpecificPath });
-  console.log(`[env] Loaded environment file: ${envFileName}`);
+if (fs.existsSync(envServerPath)) {
+  dotenv.config({ path: envServerPath });
+  console.log(`[env] Loaded environment file: ${envServerFileName}`);
+} else if (fs.existsSync(envLegacyPath)) {
+  dotenv.config({ path: envLegacyPath });
+  console.log(`[env] Loaded environment file: ${envLegacyFileName} (legacy)`);
 } else if (fs.existsSync(envDefaultPath)) {
   dotenv.config({ path: envDefaultPath });
   console.log('[env] Loaded environment file: .env');
@@ -32,6 +43,7 @@ if (fs.existsSync(envSpecificPath)) {
   dotenv.config();
   console.log('[env] No .env file found, using process environment variables.');
 }
+
 
 function toInt(value, fallback) {
   const parsed = parseInt(value, 10);

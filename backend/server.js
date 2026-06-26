@@ -49,7 +49,8 @@ app.use(notFound);
 app.use(errorHandler);
 
 // --- Dynamic port ---
-app.listen(config.port, () => {
-  console.log(`API server listening on port ${config.port} (env: ${config.env})`);
+// Bind to 0.0.0.0 so Render/QA/PROD can reach the service from outside the container/VM.
+app.listen(config.port, '0.0.0.0', () => {
+  console.log(`API server listening on ${config.port} (env: ${config.env}). Detected PORT=${process.env.PORT || 'undefined'} BACKEND_PORT=${process.env.BACKEND_PORT || 'undefined'}.`);
 });
 
